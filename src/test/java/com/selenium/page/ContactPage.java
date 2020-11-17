@@ -76,8 +76,7 @@ public class ContactPage extends BasePage {
         actions.sendKeys(Keys.ENTER).perform();
        // 2、将部门进行删除
         // 先等待人员删除后的页面加载完成
-//        waitElementVisible(afterDeleteMemberMesg);
-        Thread.sleep(2000);
+        waitElementVisible(afterDeleteMemberMesg);
         clickElement(departmentSetting);
         clickElement(delete);
         Thread.sleep(1000);
@@ -170,10 +169,9 @@ public class ContactPage extends BasePage {
      * @throws InterruptedException
      */
     public ContactPage changeDepartment(String oleDepartmentName,String newDepartmentName) throws InterruptedException {
-        // 点击修改部门入口
+        // 点击修改部门入口 点击一次可能出现因网页加载出现异常
         clickElement(new By.ByXPath("//a[text()='"+oleDepartmentName+"']"));
         clickElement(new By.ByXPath("//a[text()='"+oleDepartmentName+"']"));
-        Thread.sleep(10000);
         // 点击修改名称
         clickElement(changeDepartmentName);
         // 输入新部门名称
