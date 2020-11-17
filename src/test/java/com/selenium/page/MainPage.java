@@ -11,7 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class MainPage extends BasePage{
 
@@ -20,13 +19,19 @@ public class MainPage extends BasePage{
         this.beforeTest();
     }
 
-
+    /**
+     * 初始化驱动 并进行扫码登录企业微信
+     * @throws IOException
+     * @throws InterruptedException
+     */
     public void beforeTest() throws IOException, InterruptedException {
-        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver.exe");
+        // 初始化驱动
+        System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver2.exe");
         driver = new  ChromeDriver();
         File file = new File("cookies.yaml");
-        driver.manage().timeouts().implicitlyWait(5000, TimeUnit.SECONDS);
         driver.get("https://work.weixin.qq.com/wework_admin/frame");
+        driver.manage().window().maximize();
+
         // 判断本地是否存有cookie
         if(!file.exists()){
             GetCookie.getWeiXinCookie(driver);
@@ -41,15 +46,23 @@ public class MainPage extends BasePage{
         });
         // 刷新页面
         driver.navigate().refresh();
-        driver.manage().window().maximize();
+
+    }
+
+    /**
+     * 获取通讯录页面
+     * @return 通讯录页面
+     * @throws IOException
+     * @throws InterruptedException
+     */
+    public ContactPage getContactPage() throws IOException, InterruptedException {
+        new IndexPage(driver).clickContactBtn();
+        return new ContactPage(driver);
     }
 
 
-    public ContactPage getContactPage() throws IOException, InterruptedException {
-        new IndexPage(driver).clickContactBtn();
-        //传递selenium的driver给另外一个PO
-        //po原则4 跳转或者进入新页面使用返回新的po来模拟
-        return new ContactPage(driver);
+    public void teardown() {
+        driver.quit();
     }
 
 

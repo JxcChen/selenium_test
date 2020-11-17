@@ -10,6 +10,7 @@ public class IndexPage extends BasePage {
     }
     // 添加成员
     private By addMemberButton = new By.ByXPath("//a[@node-type='addmember']");
+    // 通讯录
     private By clickContact = new By.ById("menu_contacts");
     public void clickAddMemberButton(){
         clickElement(addMemberButton);
